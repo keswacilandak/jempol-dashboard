@@ -1,0 +1,119 @@
+import React from "react";
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { CheckCircle, AlertTriangle, XCircle } from "lucide-react";
+
+const data = [
+  { day: "30", value: 80 },
+  { day: "25", value: 60 },
+  { day: "20", value: 40 },
+  { day: "15", value: 30 },
+  { day: "10", value: 50 },
+  { day: "5", value: 65 },
+  { day: "1", value: 70 },
+];
+
+const patients = [
+  { name: "Ahmad", status: "Hijau", date: "28/04/2024", adherence: "Patuh" },
+  { name: "Budi", status: "Kuning", date: "28/04/2024", adherence: "Tidak Patuh" },
+  { name: "Dewi", status: "Hijau", date: "30/04/2024", adherence: "Patuh" },
+  { name: "Sari", status: "Merah", date: "25/04/2024", adherence: "Tidak Patuh" },
+];
+
+export default function Dashboard() {
+  return (
+    <div className="grid grid-cols-5 gap-4 min-h-screen bg-green-900 text-white p-4">
+      <div className="col-span-1 bg-green-800 rounded-2xl p-4 flex flex-col">
+        <h2 className="text-2xl font-bold mb-6">JEMPOL</h2>
+        <p className="text-sm mb-4">JIWA DAN NAPZA MONITORING DAN PENGELOLAAN LANJUTAN</p>
+        <nav className="flex flex-col gap-4">
+          <Button variant="ghost" className="justify-start">Dashboard</Button>
+          <Button variant="ghost" className="justify-start">Data Pasien</Button>
+          <Button variant="ghost" className="justify-start">Jadwal Kontrol</Button>
+          <Button variant="ghost" className="justify-start">Laporan</Button>
+          <Button variant="ghost" className="justify-start">Pengaturan</Button>
+        </nav>
+      </div>
+
+      <div className="col-span-4 p-6">
+        <div className="grid grid-cols-4 gap-4 mb-6">
+          <Card className="bg-green-700 text-white">
+            <CardContent className="p-6 text-center">
+              <CheckCircle className="mx-auto mb-2" size={32} />
+              <h3 className="text-xl font-bold">Hijau</h3>
+              <p className="text-3xl">30</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-yellow-500 text-black">
+            <CardContent className="p-6 text-center">
+              <AlertTriangle className="mx-auto mb-2" size={32} />
+              <h3 className="text-xl font-bold">Kuning</h3>
+              <p className="text-3xl">12</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-red-600 text-white">
+            <CardContent className="p-6 text-center">
+              <XCircle className="mx-auto mb-2" size={32} />
+              <h3 className="text-xl font-bold">Merah</h3>
+              <p className="text-3xl">4</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white text-black">
+            <CardContent>
+              <h3 className="text-md font-semibold mb-2">Kepatuhan Minum Obat</h3>
+              <LineChart width={200} height={100} data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" hide />
+                <YAxis hide />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#16a34a" strokeWidth={2} />
+              </LineChart>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="bg-white text-black">
+          <CardContent className="p-6">
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left p-2">Nama Pasien</th>
+                  <th className="text-left p-2">Status</th>
+                  <th className="text-left p-2">Jadwal Kontrol Berikutnya</th>
+                  <th className="text-left p-2">Kepatuhan Obat</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.map((p, idx) => (
+                  <tr key={idx} className="border-t">
+                    <td className="p-2">{p.name}</td>
+                    <td className="p-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-white text-xs font-medium ${
+                          p.status === "Hijau"
+                            ? "bg-green-700"
+                            : p.status === "Kuning"
+                            ? "bg-yellow-500 text-black"
+                            : "bg-red-600"
+                        }`}
+                      >
+                        {p.status}
+                      </span>
+                    </td>
+                    <td className="p-2">{p.date}</td>
+                    <td className="p-2">{p.adherence}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
